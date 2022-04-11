@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { AlertsContext } from "./contexts/AlertsProvider";
+import { AlertsContext } from "./contexts/AlertsContext";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -13,44 +13,19 @@ const AlertExample = () => {
   const [alertTitle, setAlertTitle] = useState("");
   const [alertText, setAlertText] = useState("");
   const [link, setLink] = useState("");
-  const [timeLimit, setTimeLimit] = useState(10000); //default to 10 seconds
+  const [timeLimit, setTimeLimit] = useState(10); //default to 10 seconds
   const [alertType, setAlertType] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
   const [isValidated, setIsValidated] = useState(false);
 
-  const { _, alertsDispatch } = useContext(AlertsContext);
-
-  const handleAlertTitleChange = (e) => {
-    setAlertTitle(e.target.value);
-    console.log("handleAlertTitleChange: ", alertTitle);
-  };
-
-  const handleAlertTextChange = (e) => {
-    setAlertText(e.target.value);
-    console.log("handleAlertTextChange", alertText);
-  };
-
-  const handleLinkChange = (e) => {
-    setLink(e.target.value);
-    console.log("handleLinkChange", link);
-  };
-
-  const handleTimeLimitChange = (e) => {
-    setTimeLimit(e.target.value);
-    console.log("handleTimeLimitChange", timeLimit);
-  };
-
-  const handleAlertTypeChange = (e) => {
-    setAlertType(e.target.value);
-    console.log("handleAlertTypeChange", alertType);
-  };
+  const { alertsDispatch } = useContext(AlertsContext);
 
   const resetForm = () => {
     setAlertTitle("");
     setAlertText("");
     setLink("");
-    setTimeLimit(10000);
+    setTimeLimit(10);
     setAlertType("");
   };
 
@@ -95,7 +70,7 @@ const AlertExample = () => {
             type="text"
             placeholder="Alert title"
             value={alertTitle}
-            onChange={handleAlertTitleChange}
+            onChange={(e) => setAlertTitle(e.target.value)}
           />
         </Grid>
         <Grid item xs={8}>
@@ -106,7 +81,7 @@ const AlertExample = () => {
             type="text"
             placeholder="Description of the alert"
             value={alertText}
-            onChange={handleAlertTextChange}
+            onChange={(e) => setAlertText(e.target.value)}
           />
         </Grid>
         <Grid item xs={8}>
@@ -117,21 +92,21 @@ const AlertExample = () => {
             type="text"
             placeholder="link.com"
             value={link}
-            onChange={handleLinkChange}
+            onChange={(e) => setLink(e.target.value)}
           />
         </Grid>
         <Grid item xs={8}>
           <TextField
             id="time-limit"
             name="timeLimit"
-            label="Time Limit (ms)"
+            label="Time Limit (seconds)"
             type="number"
             value={timeLimit}
-            onChange={handleTimeLimitChange}
+            onChange={(e) => setTimeLimit(e.target.value)}
           />
         </Grid>
-        <Grid item>
-          <Box sx={{ minWidth: 223 }}>
+        <Grid item xs={8}>
+          <Box sx={{ minWidth: 200 }}>
             <FormControl fullWidth>
               <InputLabel id="alert-type-label">Alert Type</InputLabel>
               <Select
@@ -139,7 +114,7 @@ const AlertExample = () => {
                 id="alert-type"
                 label="Alert Type"
                 value={alertType}
-                onChange={handleAlertTypeChange}
+                onChange={(e) => setAlertType(e.target.value)}
               >
                 <MenuItem key="success" value="success">
                   Success

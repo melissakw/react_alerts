@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { AlertsContext } from "./contexts/AlertsProvider";
+import { AlertsContext } from "./contexts/AlertsContext";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import IconButton from "@mui/material/IconButton";
@@ -18,7 +18,7 @@ const AlertComponent = ({ data }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       alertsDispatch({ type: "REMOVE", payload: { id: id } });
-    }, timeLimit);
+    }, timeLimit*1000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -38,6 +38,7 @@ const AlertComponent = ({ data }) => {
           </IconButton>
         }
       >
+        {/* Only display alertTitle in AlertCard if value exists */}
         {alertTitle && <AlertTitle>{alertTitle}</AlertTitle>}
         {alertText}
       </Alert>

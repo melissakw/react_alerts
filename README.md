@@ -1,69 +1,50 @@
-<!-- # Getting Started with Create React App
+# react_alerts
 
+## Breaking down the work
+We want to build a simple React demo to (1) allow users to add alerts, (2) display the alerts, and (3) remove alerts. The following components and functions were created according to the user stories provided:
 
-## Available Scripts
+### `AlertExample`
+- Create form with the following fields: alertTitle (text), alertText (text), link (text), timeLimit (number | defaults to 10 seconds), and alertType (select)
+- Add submission button that fires dispatch to the reducer so we can update state with newly added alert
+- Disable button if `isValidated` is false or `isLoading` is true
+- Use Material-UI for add alert form
 
-In the project directory, you can run:
+### `AlertManager`
+- Gets `alerts` from context and render the list of alerts
+- Add css for to position alert container on the top right corner of the screen; allows user to scroll through alerts if height of contatiner exceeds max height
 
-### `npm start`
+### `AlertComponent`
+- Add 'X' button to give user ability to remove alert; add `handleRemoveAlert` logic
+- Remove alert once `timeLimit` is up
+- Display AlertCardWithLink if link exists or else display AlertCard
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### `useAlertReducer`
+- `useAlertReducer` is a custom hook that wraps around `useReducer`; keeps track of alerts state; returns state and dispatch
+- `useAlertReducer` uses `reducer` to ADD or REMOVE alerts from state
+- alert id `id: Date.now()` is generated in `reducer; this is a rough mock id; alert id should be returned from backend in Prod
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### `AlertsContext`
+- Create context and provider
+- `AlertsContext` invokes `useAlertReducer` to allow child components to share alert state and `alertsDispatch`
 
-### `npm test`
+### `App`
+- `App` is where we wrap the AlertsProvider around `AlertExample` and `AlertManager`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Assumptions And Decisions
+### Context API instead of Redux
+I chose Context API since Redux would be an overkill for this simple demo.
 
-### `npm run build`
+### Factor out `useAlertReducer` to its own file
+- Despite the user story's suggestion to import `useAlertReducer` from `AlertManager`, I factored out `useAlertReducer` to its own file to separate the rendering logic in `AlertManager` from state management concerns.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `alertTitle` and `link` are optional
+- I made the assumption that `alertTitle` and `link` are optional in AlertExample
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Out Of Scope
+Here are some "nice to have" features I would consider if there's more time:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify) -->
+- Give user to ability to REMOVE_ALL alerts
+- Add confirmation modal for removing alerts with alertType of "error" or "warning"
+- Type check `link` input
+- Check for length and special characters in alertTitle and alertText
+- Make it repsonsive

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { AlertsContext } from "./contexts/AlertsProvider";
+import { AlertsContext } from "./contexts/AlertsContext";
 import AlertComponent from "./AlertComponent";
 import "./styles/AlertComponent.css";
 

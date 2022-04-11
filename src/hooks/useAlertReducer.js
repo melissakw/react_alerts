@@ -11,7 +11,7 @@ const reducer = (state, action) => {
       return [
         ...state,
         {
-          id: Date.now(), // Mock id; id should be returned from backend
+          id: Date.now(), // Rough mock id; id should be returned from backend
           alertTitle: action.payload.alertTitle,
           alertText: action.payload.alertText,
           link: action.payload.link,
